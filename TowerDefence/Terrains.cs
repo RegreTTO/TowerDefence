@@ -10,20 +10,26 @@ namespace WindowsFormsApplication1
     {
         public bool finish;
         int passable;
-        int role = 0;
-
+        Terrains.TerrainType role = TerrainType.Forest;
         private Terrains()
         {
 
         }
-        public Terrains(Size s, Color c, Point p, int role, int passable, bool finsh)
+        public Terrains(Size s, Color c, Point p,int role,int passable, bool finsh)
         {
             this.Location = p;
             this.BackColor = c;
             this.Size = s;
+            this.role = TerrainType.Forest;
 
         }
-
+        enum TerrainType : int
+        {
+            Forest = 0,
+            Road = 1,
+            Target = 2,
+            start = 3,
+        }
        
     }
 

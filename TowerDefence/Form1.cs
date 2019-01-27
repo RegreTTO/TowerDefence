@@ -18,12 +18,13 @@ namespace WindowsFormsApplication1
         public int hp;
         int gold = 5;
         int TowerCost = 1;
+        Terrains[,] map = new Terrains[30, 30];
         List<Terrains> Terrain = new List<Terrains>();
         List<Enemy> enemylist = new List<Enemy>();
         private void Form1_Load(object sender, EventArgs e)
         {
             label1.Text = gold + "";
-           
+
             int[,] mass = new int[30, 30];
             for (int i = 0; i < 30; i++)
             {
@@ -67,62 +68,64 @@ namespace WindowsFormsApplication1
             mass[10, 20] = 1;
             mass[9, 20] = 1;
             mass[8, 20] = 2;
-            
+
 
 
             for (int i = 0; i < 30; i++)
             {
-               for (int j = 0; j < 30; j++)
-               {
+                for (int j = 0; j < 30; j++)
+                {
 
-                   Terrains picturebox;
+                    Terrains picturebox;
                     switch (mass[i, j])
                     {
                         case 0:
 
-                                    picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), 0, 0, false);
-                                    picturebox.BackColor = Color.Green;
-                                    Terrain.Add(picturebox);
-                                picturebox.Click += new System.EventHandler(this.picturebox_Click);
+                            picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), 0, 0, false);
+                            picturebox.BackColor = Color.Green;
+                            map[i, j] = picturebox;
+                            picturebox.Click += new System.EventHandler(this.picturebox_Click);
                             this.Controls.Add(picturebox);
                             break;
 
-                       case 1:
+                        case 1:
 
-                                picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), 0, 0, false);
-                                picturebox.BackColor = Color.FromArgb(202, 187, 147);
+                            picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), 0, 0, false);
+                            picturebox.BackColor = Color.FromArgb(202, 187, 147);
+                            map[i, j] = picturebox;
                             this.Controls.Add(picturebox);
                             break;
                         case 2:
                             picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), 0, 0, true);
                             picturebox.BackColor = Color.Blue;
+                            map[i, j] = picturebox;
                             this.Controls.Add(picturebox);
                             break;
-                       default:
+                        default:
                             {
                                 picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), 0, 0, false);
                                 picturebox.BackColor = Color.Green;
-                                Terrain.Add(picturebox);
+                                map[i, j] = picturebox;
                                 picturebox.Click += new System.EventHandler(this.picturebox_Click);
                                 this.Controls.Add(picturebox);
                                 break;
                             }
                     }
                 }
-             }
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
 
-            Enemy enemy = new Enemy(new Size(32,32), Color.OrangeRed,new Point(32, 29 * 32));
+            Enemy enemy = new Enemy(new Size(32, 32), Color.OrangeRed, new Point(32, 29 * 32));
             this.Controls.Add(enemy);
             enemylist.Add(enemy);
         }
 
         public void timer2_Tick(object sender, EventArgs e)
         {
-            
+
             foreach (Enemy en in enemylist)
             {
                 en.Move(Terrain);
@@ -135,7 +138,7 @@ namespace WindowsFormsApplication1
             {
                 gold -= TowerCost;
                 label1.Text = gold + "";
-                Tower tower = new Tower(1,Color.Black,1,1,1,1,1,(sender as PictureBox).Location,(sender as PictureBox).Size);
+                Tower tower = new Tower(1, Color.Black, 1, 1, 1, 1, 1, (sender as PictureBox).Location, (sender as PictureBox).Size);
                 this.Controls.Add(tower);
                 tower.BringToFront();
             }
