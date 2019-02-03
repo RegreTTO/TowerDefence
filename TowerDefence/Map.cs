@@ -99,7 +99,7 @@ namespace WindowsFormsApplication1
                 }
                 //заменяем текущие шаги на новые
                 currentsteps = newcurrentsteps;
-
+                
             }
             //очередь шагов от старта до финиша
             Queue<Point> way = new Queue<Point>();
@@ -115,7 +115,16 @@ namespace WindowsFormsApplication1
                 List<Point> neighboors = getNeighboors(currentstep);
                 foreach(Point p in neighboors)
                 {
-                    if(stepnum[p.X,p.Y] == currentstepnum)
+                    if (p.Equals(end))
+                    {
+                        finish = true;
+                        way.Enqueue(p);
+                            break;
+                    }
+                    if (stepnum[p.X, p.Y] == currentstepnum)
+                    {
+
+                    }
                 }
 
             }
