@@ -8,6 +8,7 @@ namespace WindowsFormsApplication1
 {
     class Map
     {
+        int cellsize;
         int maxX;
         int maxY;
         //массив, где хранится проходимая/непроходимая ячейка
@@ -17,8 +18,9 @@ namespace WindowsFormsApplication1
         {
 
         }
-        public Map(bool[,] roadMap)
+        public Map(bool[,] roadMap, int cellsize)
         {
+            this.cellsize = cellsize;
             this.roadMap = roadMap;
             //GetLength возвращает кол-во элементов массива в заданом измерении
             maxX = roadMap.GetLength(0) - 1;
@@ -57,7 +59,7 @@ namespace WindowsFormsApplication1
             return result;
 
         }
-        public Queue<Point> GivemeTheWay(Point start, Point end)
+        private Queue<Point> GivemeTheWay(Point start, Point end)
         {
             bool finish = false;
             //номер текущего шага
@@ -132,6 +134,21 @@ namespace WindowsFormsApplication1
 
             }
             return way;
+        }
+        //получение координат точек пути
+        public Queue<Point> CalculateWay(Point start, Point end)
+        {
+            Queue<Point> way = GivemeTheWay(start,end);
+            Queue<Point> result = new Queue<Point>();
+            while(way.Count >0)
+            {
+              Point temp = way.Dequeue();
+                temp.X = temp.X * cellsize;
+                temp.Y = temp.Y * cellsize;
+                result.Enqueue(temp);
+               
+            }
+            return result;
         }
     }
 }

@@ -8,27 +8,36 @@ namespace WindowsFormsApplication1
 {
     public class Terrains : PictureBox
     {
-        public bool finish;
-        int passable;
+        bool finish;
+        bool passable;
         Terrains.TerrainType role = TerrainType.Forest;
         private Terrains()
         {
 
         }
-        public Terrains(Size s, Color c, Point p,int role,int passable, bool finsh)
+        public Terrains(Size s, Color c, Point p,Terrains.TerrainType role,bool passable, bool finish)
         {
             this.Location = p;
             this.BackColor = c;
             this.Size = s;
-            this.role = TerrainType.Forest;
-
+            this.role = role;
+            this.passable = passable;
+            this.finish = finish;
         }
-        enum TerrainType : int
+        public enum TerrainType : int
         {
             Forest = 0,
             Road = 1,
             Target = 2,
             start = 3,
+        }
+        public bool IsPassable()
+        {
+            return passable;
+        }
+       public bool IsFinish()
+        {
+            return finish;
         }
        
     }

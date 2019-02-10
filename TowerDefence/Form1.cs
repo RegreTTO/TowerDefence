@@ -81,7 +81,7 @@ namespace WindowsFormsApplication1
                     {
                         case 0:
 
-                            picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), 0, 0, false);
+                            picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), Terrains.TerrainType.Forest, false, false);
                             picturebox.BackColor = Color.Green;
                             map[i, j] = picturebox;
                             picturebox.Click += new System.EventHandler(this.picturebox_Click);
@@ -90,20 +90,20 @@ namespace WindowsFormsApplication1
 
                         case 1:
 
-                            picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), 0, 0, false);
+                            picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), Terrains.TerrainType.Road, true, false);
                             picturebox.BackColor = Color.FromArgb(202, 187, 147);
                             map[i, j] = picturebox;
                             this.Controls.Add(picturebox);
                             break;
                         case 2:
-                            picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), 0, 0, true);
+                            picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), Terrains.TerrainType.start, true, true);
                             picturebox.BackColor = Color.Blue;
                             map[i, j] = picturebox;
                             this.Controls.Add(picturebox);
                             break;
                         default:
                             {
-                                picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), 0, 0, false);
+                                picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), Terrains.TerrainType.Target, true, false);
                                 picturebox.BackColor = Color.Green;
                                 map[i, j] = picturebox;
                                 picturebox.Click += new System.EventHandler(this.picturebox_Click);

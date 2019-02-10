@@ -9,6 +9,10 @@ namespace WindowsFormsApplication1
 {
     public class Enemy : PictureBox
     {
+        double cx;
+        double cy;
+        Point currentstep;
+        Queue<Point> way = new Queue<Point>();
         Form1 form;
         public int Speed = 1;
         public int HP = 1;
@@ -18,15 +22,17 @@ namespace WindowsFormsApplication1
         public int Gold = 1;
         private Enemy()
         {
-            
+
         }
         public Enemy(Size en, Color co, Point l)
         {
             this.BackColor = co;
             this.Size = en;
-            this.Location =l;
+            this.Location = l;
             this.Visible = true;
             this.BringToFront();
+            this.cx = this.Location.X;
+            this.cy = this.Location.Y;
         }
         public new void Move(List<Terrains> Terrains)
         {
@@ -34,18 +40,18 @@ namespace WindowsFormsApplication1
             Point move2 = new Point(Location.X, Location.Y + Speed);
             Point move3 = new Point(Location.X + Speed, Location.Y);
             Point move4 = new Point(Location.X - Speed, Location.Y);
-            Point selfLoc = new Point(this.Location.X,this.Location.Y);
-                foreach(Terrains terr in Terrains)
+            Point selfLoc = new Point(this.Location.X, this.Location.Y);
+            foreach (Terrains terr in Terrains)
             {
-                if(terr.finish)
+                if (terr.IsFinish())
                 {
-                    if(terr.Location.Equals(selfLoc))
+                    if (terr.Location.Equals(selfLoc))
                     {
                         form.hp--;
                     }
                 }
             }
-            
+
 
             switch (Direction)
             {
@@ -129,10 +135,58 @@ namespace WindowsFormsApplication1
             }
             return true;
         }
-        
+
         public bool Finished(List<Terrains> terrains)
         {
             return false;
+        }
+        public void TakeWay(Queue<Point> way)
+        {
+            this.way = way;
+        }
+        public void NewMove()
+        {
+            //если текущий шаг не существует
+            if (currentstep == null || currentstep.Equals(this.Location))
+            {
+                //если есть путь
+                if (way.Count > 0)
+                {
+                    currentstep = way.Dequeue();
+                }
+                else
+                {
+
+                    return;
+                }
+            }
+
+            double dx = currentstep.X - this.Location.X;
+            double dy = currentstep.Y - this.Location.Y;
+
+            double a = 0;
+            if (dx == 0)
+            {
+                if (dy > 0)
+                {
+                    a = Math.PI / 2;
+                }
+                else if (dy < 0)
+                {
+                    a = -Math.PI / 2;
+                }
+            }
+
+            double tan = dy / dx;
+            a = Math.Atan(tan);
+
+            dx = Speed * Math.Cos(a);
+            dy = Speed * Math.Sin(a);
+
+            cx += dx;
+            cy += dy;
+
+            this.Location = new Point((int)Math.Round(cx), (int)Math.Round(cy));
         }
     }
 }
