@@ -121,13 +121,17 @@ namespace WindowsFormsApplication1
                         way.Enqueue(p);
                             break;
                     }
+                    //если сосед является следующем шагом
                     if (stepnum[p.X, p.Y] == currentstepnum)
                     {
-
+                        currentstep = p;
+                        way.Enqueue(p);
+                        break;
                     }
                 }
 
             }
+            return way;
         }
     }
 }
