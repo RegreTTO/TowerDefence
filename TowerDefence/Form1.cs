@@ -18,7 +18,7 @@ namespace WindowsFormsApplication1
         public int hp;
         int gold = 5;
         int TowerCost = 1;
-        Terrains[,] map = new Terrains[30, 30];
+        Terrains[,] terrains = new Terrains[30, 30];
         List<Terrains> Terrain = new List<Terrains>();
         List<Enemy> enemylist = new List<Enemy>();
         private void Form1_Load(object sender, EventArgs e)
@@ -83,7 +83,7 @@ namespace WindowsFormsApplication1
 
                             picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), Terrains.TerrainType.Forest, false, false);
                             picturebox.BackColor = Color.Green;
-                            map[i, j] = picturebox;
+                            terrains[i, j] = picturebox;
                             picturebox.Click += new System.EventHandler(this.picturebox_Click);
                             this.Controls.Add(picturebox);
                             break;
@@ -92,20 +92,20 @@ namespace WindowsFormsApplication1
 
                             picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), Terrains.TerrainType.Road, true, false);
                             picturebox.BackColor = Color.FromArgb(202, 187, 147);
-                            map[i, j] = picturebox;
+                            terrains[i, j] = picturebox;
                             this.Controls.Add(picturebox);
                             break;
                         case 2:
                             picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), Terrains.TerrainType.start, true, true);
                             picturebox.BackColor = Color.Blue;
-                            map[i, j] = picturebox;
+                            terrains[i, j] = picturebox;
                             this.Controls.Add(picturebox);
                             break;
                         default:
                             {
                                 picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), Terrains.TerrainType.Target, true, false);
                                 picturebox.BackColor = Color.Green;
-                                map[i, j] = picturebox;
+                                terrains[i, j] = picturebox;
                                 picturebox.Click += new System.EventHandler(this.picturebox_Click);
                                 this.Controls.Add(picturebox);
                                 break;
@@ -141,6 +141,19 @@ namespace WindowsFormsApplication1
                 Tower tower = new Tower(1, Color.Black, 1, 1, 1, 1, 1, (sender as PictureBox).Location, (sender as PictureBox).Size);
                 this.Controls.Add(tower);
                 tower.BringToFront();
+            }
+        }
+        public Map GenerateMap(Terrains[,] terrains)
+        {
+            int x = 0;
+            bool[,] roadmap = new bool[terrains.GetLength(0),terrains.GetLength(1)];
+                for(int i = 0;0<terrains.GetLength(0); i++)
+            {
+                for(int j = 0;0<terrains.GetLength(1);j++)
+                {
+
+                    roadmap[i,j] = 
+                }
             }
         }
     }
