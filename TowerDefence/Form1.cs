@@ -15,7 +15,7 @@ namespace WindowsFormsApplication1
         {
             InitializeComponent();
         }
-        public int hp;
+        public int hp = 10;
         int gold = 5;
         int TowerCost = 1;
         Terrains[,] terrains = new Terrains[30, 30];
@@ -126,9 +126,8 @@ namespace WindowsFormsApplication1
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-
-            Enemy enemy = new Enemy(new Size(cellsize, cellsize), Color.OrangeRed, new Point(start.X*cellsize, start.Y*cellsize) );
-            enemy.TakeWay(map.CalculateWay(start,end));
+            Enemy enemy = new Enemy(new Size(cellsize, cellsize), Color.OrangeRed, new Point(start.X* cellsize, start.Y* cellsize));
+            enemy.TakeWay(map.CalculateWay(start, end));
             this.Controls.Add(enemy);
             enemylist.Add(enemy);
         }
@@ -136,10 +135,27 @@ namespace WindowsFormsApplication1
         public void timer2_Tick(object sender, EventArgs e)
         {
 
+            List<Enemy> toremove = new List<Enemy>();
             foreach (Enemy en in enemylist)
             {
                 en.NewMove();
+                Point enemyLocation = new Point(en.Location.X, en.Location.Y);
+                foreach (Terrains terr in terrains)
+                {
+                    if (terr.IsFinish() && terr.Location.Equals(enemyLocation))
+                    {
+                        ChangeHP(-1);
+                        en.Visible = false;
+                        this.Controls.Remove(en);
+                        toremove.Add(en);
+                    }
+                }
                 en.BringToFront();
+            }
+
+            foreach (Enemy en in toremove)
+            {
+                enemylist.Remove(en);
             }
         }
         public void picturebox_Click(object sender, EventArgs e)
@@ -169,6 +185,11 @@ namespace WindowsFormsApplication1
             }
             Map map = new Map(roadmap, cellsize);
             return map;
+        }
+        public void ChangeHP(int diffrence)
+        {
+            hp += diffrence;
+            label3.Text = "hp:" + hp;
         }
     }
 }

@@ -90,7 +90,7 @@ namespace WindowsFormsApplication1
                     foreach (Point n in neighboors)
                     {
                         //если сосед проходим и через него ни разу не прошли
-                        if (roadMap[n.X, n.Y] && (stepnum[n.X, n.Y] != 0))
+                        if (roadMap[n.X, n.Y] && (stepnum[n.X, n.Y] == 0))
                         {
                             //добавление точки в новые текущие шаги
                             newcurrentsteps.Add(n);

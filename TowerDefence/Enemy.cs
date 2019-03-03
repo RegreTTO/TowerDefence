@@ -147,7 +147,7 @@ namespace WindowsFormsApplication1
         public void NewMove()
         {
             //если текущий шаг не существует
-            if (currentstep == null || currentstep.Equals(this.Location))
+            if (currentstep.Equals(new Point(0, 0)) || currentstep.Equals(this.Location))
             {
                 //если есть путь
                 if (way.Count > 0)
@@ -179,7 +179,10 @@ namespace WindowsFormsApplication1
 
             double tan = dy / dx;
             a = Math.Atan(tan);
-
+            if (dx < 0)
+            {
+                a += Math.PI;
+            }
             dx = Speed * Math.Cos(a);
             dy = Speed * Math.Sin(a);
 
