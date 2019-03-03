@@ -6,7 +6,7 @@ using System.Text;
 
 namespace WindowsFormsApplication1
 {
-    class Map
+    public class Map
     {
         int cellsize;
         int maxX;

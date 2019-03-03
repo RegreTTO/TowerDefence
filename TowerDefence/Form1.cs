@@ -21,6 +21,11 @@ namespace WindowsFormsApplication1
         Terrains[,] terrains = new Terrains[30, 30];
         List<Terrains> Terrain = new List<Terrains>();
         List<Enemy> enemylist = new List<Enemy>();
+        int cellsize = 16;
+        Map map;
+        Point start;
+        Point end;
+
         private void Form1_Load(object sender, EventArgs e)
         {
             label1.Text = gold + "";
@@ -33,7 +38,7 @@ namespace WindowsFormsApplication1
                     mass[i, j] = 0;
                 }
             }
-            mass[1, 29] = 1;
+            mass[1, 29] = 3;
             mass[1, 28] = 1;
             mass[1, 27] = 1;
             mass[1, 26] = 1;
@@ -81,8 +86,7 @@ namespace WindowsFormsApplication1
                     {
                         case 0:
 
-                            picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), Terrains.TerrainType.Forest, false, false);
-                            picturebox.BackColor = Color.Green;
+                            picturebox = new Terrains(new Size(cellsize, cellsize), Color.Green, new Point(i * cellsize, j * cellsize), Terrains.TerrainType.Forest, false, false);
                             terrains[i, j] = picturebox;
                             picturebox.Click += new System.EventHandler(this.picturebox_Click);
                             this.Controls.Add(picturebox);
@@ -90,21 +94,25 @@ namespace WindowsFormsApplication1
 
                         case 1:
 
-                            picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), Terrains.TerrainType.Road, true, false);
-                            picturebox.BackColor = Color.FromArgb(202, 187, 147);
+                            picturebox = new Terrains(new Size(cellsize, cellsize), Color.FromArgb(202, 187, 147), new Point(i * cellsize, j * cellsize), Terrains.TerrainType.Road, true, false);
                             terrains[i, j] = picturebox;
                             this.Controls.Add(picturebox);
                             break;
                         case 2:
-                            picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), Terrains.TerrainType.start, true, true);
-                            picturebox.BackColor = Color.Blue;
+                            picturebox = new Terrains(new Size(cellsize, cellsize), Color.Blue, new Point(i * cellsize, j * cellsize), Terrains.TerrainType.Target, true, true);
                             terrains[i, j] = picturebox;
                             this.Controls.Add(picturebox);
+                            end = new Point(i, j);
+                            break;
+                        case 3:
+                            picturebox = new Terrains(new Size(cellsize, cellsize), Color.Gray, new Point(i * cellsize, j * cellsize), Terrains.TerrainType.start, true, true);
+                            terrains[i, j] = picturebox;
+                            this.Controls.Add(picturebox);
+                            start = new Point(i, j);
                             break;
                         default:
                             {
-                                picturebox = new Terrains(new Size(32, 32), Color.Green, new Point(i * 32, j * 32), Terrains.TerrainType.Target, true, false);
-                                picturebox.BackColor = Color.Green;
+                                picturebox = new Terrains(new Size(cellsize, cellsize), Color.Green, new Point(i * cellsize, j * cellsize), Terrains.TerrainType.Forest, false, false);
                                 terrains[i, j] = picturebox;
                                 picturebox.Click += new System.EventHandler(this.picturebox_Click);
                                 this.Controls.Add(picturebox);
@@ -113,12 +121,14 @@ namespace WindowsFormsApplication1
                     }
                 }
             }
-        }
+            map = GenerateMap(terrains, cellsize);
+        } 
 
         private void timer1_Tick(object sender, EventArgs e)
         {
 
-            Enemy enemy = new Enemy(new Size(32, 32), Color.OrangeRed, new Point(32, 29 * 32));
+            Enemy enemy = new Enemy(new Size(cellsize, cellsize), Color.OrangeRed, new Point(start.X*cellsize, start.Y*cellsize) );
+            enemy.TakeWay(map.CalculateWay(start,end));
             this.Controls.Add(enemy);
             enemylist.Add(enemy);
         }
@@ -128,7 +138,7 @@ namespace WindowsFormsApplication1
 
             foreach (Enemy en in enemylist)
             {
-                en.Move(Terrain);
+                en.NewMove();
                 en.BringToFront();
             }
         }
@@ -143,18 +153,22 @@ namespace WindowsFormsApplication1
                 tower.BringToFront();
             }
         }
-        public Map GenerateMap(Terrains[,] terrains)
+
+        public Map GenerateMap(Terrains[,] terrains, int cellsize)
         {
             int x = 0;
-            bool[,] roadmap = new bool[terrains.GetLength(0),terrains.GetLength(1)];
-                for(int i = 0;0<terrains.GetLength(0); i++)
-            {
-                for(int j = 0;0<terrains.GetLength(1);j++)
-                {
+            bool[,] roadmap = new bool[terrains.GetLength(0), terrains.GetLength(1)];
+            
 
-                    roadmap[i,j] = 
+            for (int i = 0; i < terrains.GetLength(0); i++)
+            {
+                for (int j = 0; j < terrains.GetLength(1); j++)
+                {
+                    roadmap[i, j] = terrains[i, j].IsPassable();
                 }
             }
+            Map map = new Map(roadmap, cellsize);
+            return map;
         }
     }
 }
